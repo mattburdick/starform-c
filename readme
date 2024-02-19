@@ -1,0 +1,203 @@
+BACKGROUND:
+
+This program is based on an article by Martyn Fogg in the Journal of
+the British Interplanetary Society (JBIS) called 'Extrasolar Planetary
+Systems: a Microcomputer Simulation'.  The article describes how he
+implemented a program to generate various sun-like solar systems.
+Since he did a good job of listing references, I recreated the program
+in C, and the result is what you see in front of you.
+
+
+CREATING THE STARFORM EXECUTABLE FILE:
+
+Because of my need to run this on an IBM-PC, I have included makefiles
+for two popular MS-DOS compilers (Microsoft C and Turbo C) as well as
+a makefile for a normal Unix machine.  These are used as follows:
+
+Compiling under Unix:
+        make
+
+Compiling under MS-DOS (with Turbo C):
+        make -fmakefile.tc
+
+Compiling under MS-DOS (with Microsoft C):
+        make makefile.msc
+
+
+RUNNING THE STARFORM EXECUTABLE:
+
+The starform program has four command-line arguments:
+
+        -m      Build moons.
+                This flag will cause moons to be generated for every
+                planet.  The moon accretion algorithm is the same as
+                that used for accreting dust and gas for planets.
+                Since the majority of computation time in starform is
+                spent in the accretion process, using the -m flag will
+                increase program runtime correspondingly.  Be prepared
+                to do something else for a while if you use this flag
+                on a slow machine!
+
+        -s#     Initialize the random-number generator.
+                This flag initializes the random-number generator to
+                the integer provided directly following the '-s'.
+                This is useful when controlling which star system is
+                generated, and may be used to ensure that no repeat
+                star systems are produced.
+
+        -v#     Set verbosity level.
+                This may be used to examine (at varying levels of
+                detail) what the program is currently calculating.  At
+                this release, there are three levels of verbosity.
+
+                0       The default.  Don't display any extra information -
+                        just the results.
+                1       Display planetary accretion information while
+                        building the planets.
+                2       Display protoplanet accretion information while
+                        building the moons.
+
+       -tl#l/# Specify stellar info.
+             Specifying stellar info allows the user to indicate what
+             spectral class and luminosity type the central star
+             should be in the format "l#l", which indicates that a
+             letter (spectral type), number (spectral type modifier),
+             letter (luminosity class), and a slash followed by a
+             number (AU's from the primary) are needed to fully
+             describe the star.  Possible letters for the spectral
+             type are below:
+
+                        O       Hot blue stars ( greater than 25,000K)
+                        B       Hot blue stars (11,000 - 25,000K)
+                        A       Blue stars (7,500 - 11,000K)
+                        F       Blue-white stars (6,000 - 7,500K)
+                        G       Yellow-white stars (5,000 - 6,000K)
+                        K       Orange-red stars (3,500 - 5,000K)
+                        M       Red stars (less than 3,500K)
+
+             Each spectral class star is further described by a
+             modifier consisting of a number from 0 - 9, breaking each
+             letter classification into tenths.  The sequence for
+             spectral class G (sun-like) stars are, in order of
+             decreasing temperature: G0, G1,...  , G9, K0,...
+
+             Although most (90%) of stars in our neighborhood are main
+             sequence stars, about 10% are white dwarfs and less than
+             1% are giants or supergiants.  The size of the star is
+             known as the luminosity class:
+
+        Usual     Starform
+        code     designation
+        __________________
+          V           M    Main sequence  Normal hydrogen-burning stars.
+        III           G    Giant          Cool, high luminosity stars.
+         Ia           S    Supergiant     Cool, even higher luminosity stars.
+          D           D    White dwarf    Hot, dense, and planet-sized.
+
+             There are several luminosity classes not represented in
+             Starform.  For completeness, they are:
+
+                    Ib   Less luminous supergiants.
+                    II   Bright giants.
+                    IV   Subgiants (between giants and main-sequence).
+
+             The final number, separated from the others by a slash,
+             indicates this star's distance from the primary in units
+             of AU's (an abbreviation for Astronomical Units - a
+             common unit of astrophysical measure: the distance from
+             the Earth to the Sun).
+
+
+
+EXAMPLES OF USE:
+
+To generate a system resembling Earth's (a normal system with moons
+about the planets, a main-sequence G3 primary, and no companion
+stars):
+
+    starform -m -tG3M/0
+
+To generate a completely random system with no moons:
+
+    starform
+
+To generate a system resembling Alpha Centauri (a G2 primary (Alpha)
+with a dwarf K1 companion star (Beta) at 23 AU distance from Alpha):
+
+    starform -m -tG2M/0 -tK1D/23
+
+Actually, Beta Centauri lies in an orbit of eccentricity 0.52 about
+Alpha Centauri (meaning its orbit ranges anywhere from 11 to 35 AU
+from Alpha), but for now we'll assume the eccentricity of companion
+stars is zero.
+
+
+PRACTICAL CONSIDERATIONS:
+
+As a warning, don't be surprised if the program take a while to run.
+It's been a while since I've updated the timings here for newer
+machines, but here are some sample run times when moons are not built:
+
+        1.4 seconds on a Sun-4/390
+        2-5 seconds user time on an HP9000/350
+        5-30 seconds on a Sun-3/60
+        5-8 seconds on an 8087-equipped 10MHz IBM-XT
+        4 minutes on an 8 MHz IBM-PC
+        7 minutes on a normal IBM-PC
+
+
+
+Now for some references.  These are not the only good references on this
+subject; only the most interesting of many that were listed in Fogg's
+article in vol 38 of JBIS:
+
+For a good description of the entire program:
+
+    "Extra-Solar Planetary Systems: A Microcomputer Simulation"
+    Martyn J. Fogg,  Journal of the British Interplanetary Society
+    Vol 38, pp. 501 - 514, 1985
+
+For the surface temperature/albedo iterative loop:
+
+    "The Evolution of the Atmosphere of the Earth"
+    Michael H. Hart, Icarus, Vol 33, pp. 23 - 39, 1978
+
+For the determination of the radius of a terrestrial planet:
+
+    "The Internal Constitution of the Planets"
+    D. S. Kothari, Ph.D. , Mon. Not. Roy. Astr. Soc.
+    Vol 96, pp. 833 - 843, 1936
+
+For the planetary mass accretion algorithm:
+
+    "Formation of Planetary Systems by Aggregation: A Computer Simulation"
+    S. H. Dole, RAND paper no. P-4226, 1969
+
+For the length of day calculation:
+
+    "Q in the Solar System"
+    P. Goldreich and S. Soter, Icarus, Vol 5, pp. 375 - 389, 1966
+
+
+
+Thanks to many people on Usenet for their help in debugging, testing,
+and adding features to this program.
+
+Enjoy, and if you find any glaring inconsistancies or interesting
+pieces to add to the simulation, let me know and I'll include it in
+any other distributions I send out.
+
+Snail Mail:
+    Matt Burdick
+    Hewlett-Packard, MS6U0
+    1501 Page Mill Rd
+    Palo Alto, CA
+
+Email:
+    burdick@hpspd.spd.hp.com
+
+
+SAMPLE OUTPUT:
+
+Here is a sample of how starform would describe the Sun and Earth:
+

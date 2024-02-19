@@ -1,0 +1,39 @@
+# This is a makefile for Unix 'make' if you happen to have a version of
+# it for the PC.  This version is for Microsoft C.
+
+# To make a version for debugging or tracing, uncomment this line:
+CFLAGS = /W3 /Zi
+
+# To make a normal optimized version, uncomment this line:
+#CFLAGS = /Ox
+
+# To make a codeview-debuggable executable, uncomment this line:
+LINKFLAGS = /CODEVIEW
+
+# This line should always be uncommented:
+OBJS = accrete.obj enviro.obj stars.obj display.obj utils.obj
+
+
+starform.exe: starform.obj $(OBJS)
+	link $(LINKFLAGS) starform.obj $(OBJS);
+
+accrete.obj: accrete.c const.h structs.h config.h protos.h
+	cl /c $(CFLAGS) accrete.c
+
+enviro.obj: enviro.c const.h structs.h config.h protos.h
+	cl /c $(CFLAGS) enviro.c
+
+stars.obj: stars.c const.h structs.h config.h
+	cl /c $(CFLAGS) stars.c
+
+display.obj: display.c const.h structs.h config.h
+	cl /c $(CFLAGS) display.c
+
+utils.obj: utils.c const.h config.h
+	cl /c $(CFLAGS) utils.c config.h
+
+starform.obj: starform.c const.h structs.h config.h
+	cl /c $(CFLAGS) starform.c
+
+
+
