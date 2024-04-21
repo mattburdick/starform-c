@@ -80,4 +80,3 @@ typedef struct Spectral_Info {
 	int percentage;
 } spectral_info;
 
-

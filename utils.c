@@ -13,6 +13,7 @@
 #include    <math.h>
 #include    <errno.h>
 #include	<stdio.h>
+#include    <stdlib.h>
 
 #ifdef MSDOS
 #include	<stdlib.h>
@@ -38,12 +39,6 @@ double x,y;
         printf("error in power\n");
     }
     return (result);
-}
-
-int round(num)
-double num;
-{
-    return((int)(num + 0.5));
 }
 
 /*----------------------------------------------------------------------*/

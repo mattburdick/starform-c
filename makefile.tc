@@ -22,4 +22,3 @@ utils.obj: utils.c const.h config.h
 starform.obj: starform.c const.h structs.h config.h
 	tcc -c $(CFLAGS) starform.c
 
-

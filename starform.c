@@ -10,6 +10,7 @@
  *    C language includes:
  */
 #include    <stdio.h>
+#include    <stdlib.h>
 #include    <math.h>
 #include    <sys/types.h>
 #include    <sys/timeb.h>

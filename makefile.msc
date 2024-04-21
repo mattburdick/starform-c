@@ -35,4 +35,3 @@ starform.obj: starform.c const.h structs.h config.h
 starform.exe: starform.obj $(OBJS)
 	link $(LINKFLAGS) starform.obj $(OBJS);
 
-

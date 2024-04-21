@@ -12,6 +12,7 @@
 #include	<math.h>
 #include    <errno.h>
 #include	<stdio.h>
+#include    <stdlib.h>
 
 #ifdef MSDOS
 #include	<process.h>
@@ -457,4 +458,3 @@ int rand_type () {
 		return(MAIN_SEQUENCE);
 	}
 }
-

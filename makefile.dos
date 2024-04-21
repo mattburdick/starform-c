@@ -36,4 +36,3 @@ starform.obj: starform.c const.h structs.h config.h
 	cl /c $(CFLAGS) starform.c
 
 
-

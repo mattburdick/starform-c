@@ -26,4 +26,3 @@ lint:
 shar: $(SHARFILES)
 	shar -abcCs $(SHARFILES) >starform.shar
 
-

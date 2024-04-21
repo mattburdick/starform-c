@@ -731,4 +731,3 @@ planet_pointer *planet;
     (*planet)->surf_temp = new_temp;
 }
 
-

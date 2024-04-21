@@ -5,6 +5,7 @@
 /*----------------------------------------------------------------------*/
 /* (c) Copyright Matt Burdick 1991 - All Rights Reserved                */
 /*----------------------------------------------------------------------*/
+#include "structs.h"
 /*
  *	From 'accrete.c':
  */
@@ -32,7 +33,6 @@ planet_pointer init_planet_list(star_pointer);
  *	From 'utils.c':
  */
 double         power(double, double);
-int            round(double);
 double         random_number(double, double);
 double         about(double, double);
 double         random_eccentricity(void);
