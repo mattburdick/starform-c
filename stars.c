@@ -304,6 +304,7 @@ int lum_class;
 	}
 	char *result = malloc(strlen(buf) + 1);
 	strcpy(result, buf);
+	return result;
 }
 
 /*--------------------------------------------------------------------------*/
