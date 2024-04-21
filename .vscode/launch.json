@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Build and Debug",
+            "name": "Mac: Build and Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/starform",
@@ -14,6 +14,27 @@
             "MIMode": "lldb",
             "preLaunchTask": "build",
             "miDebuggerPath": "/usr/bin/lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Win: Build and Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/starform.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "build",
+            "miDebuggerPath": "C:\\ProgramData\\mingw64\\mingw64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

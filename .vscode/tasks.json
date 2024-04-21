@@ -12,6 +12,7 @@
                 "starform.c",
                 "stars.c",
                 "utils.c",
+                "-g",  // Add debug information
                 "-o",
                 "starform"
             ],

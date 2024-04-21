@@ -13,6 +13,7 @@
 #include    <errno.h>
 #include	<stdio.h>
 #include    <stdlib.h>
+#include    <string.h>
 
 #ifdef MSDOS
 #include	<process.h>
@@ -301,7 +302,8 @@ int lum_class;
 				break;
 		}
 	}
-	return(buf);
+	char *result = malloc(strlen(buf) + 1);
+	strcpy(result, buf);
 }
 
 /*--------------------------------------------------------------------------*/
