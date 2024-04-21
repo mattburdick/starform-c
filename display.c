@@ -202,4 +202,3 @@ sys_pointer system;
 	else describe_system(system);
 }
 
-

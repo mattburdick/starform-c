@@ -111,7 +111,7 @@ planet_pointer planet;
 }
 
 /*
- *  primary_effect is the term in the equation that reduces the size of the 
+ *  primary_effect is the term in the equation that reduces the size of the
  *  dust limit due to the proximity of the primary star.
  */
 
@@ -1035,4 +1035,3 @@ star_pointer star_head;
     return(planet_list_head);
 }
 
-

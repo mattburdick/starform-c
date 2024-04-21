@@ -519,4 +519,3 @@ void generate_stellar_system()
 }
 
 
-
