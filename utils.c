@@ -15,22 +15,12 @@
 #include	<stdio.h>
 #include    <stdlib.h>
 
-#ifdef MSDOS
-#include	<stdlib.h>
-#endif
-
 #include    "config.h"
 #include    "const.h"
 #include    "structs.h"
-
-#ifdef MSDOS
 #include    "protos.h"
-#endif
 
-/* extern int errno;*/
-
-double power(x, y)
-double x,y;
+double power(double x, double y)
 {
     double result;
 
@@ -46,8 +36,7 @@ double x,y;
 /*  real number bounds.                                                 */
 /*----------------------------------------------------------------------*/
 
-double random_number(bound1, bound2)
-double bound1, bound2;
+double random_number(double bound1, double bound2)
 {
     double range, lowbound;
 
@@ -65,19 +54,17 @@ double bound1, bound2;
     return((((double)rand()) / (double)(RAND_MAX)) * range + lowbound);
 }
 
-
 /*----------------------------------------------------------------------*/
 /*   This function returns a value within a certain variation of the    */
 /*   exact value given it in 'value'.                                   */
 /*----------------------------------------------------------------------*/
 
-double about(value, variation)
-double value, variation;
+double about(double value, double variation)
 {
     return(value + (value * random_number(-variation,variation)));
 }
 
-double random_eccentricity()
+double random_eccentricity(void)
 {
     return(1.0 - power(random_number(0.0001, 1.0),ECCENTRICITY_COEFF));
 }

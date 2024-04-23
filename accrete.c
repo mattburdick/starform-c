@@ -14,23 +14,11 @@
 #include    <math.h>
 #include    <errno.h>
 
-#ifdef MSDOS
-#include    <malloc.h>
-#include	<process.h>
-#endif
-
 #include    "config.h"
 #include    "const.h"
 #include    "structs.h"
-
-#ifdef MSDOS
 #include	"protos.h"
-#endif
 
-extern double random_number();
-extern double random_eccentricity();
-extern double power();
-extern double eff_temp();
 extern int flag_verbose;
 
 /*
@@ -48,8 +36,7 @@ dust_pointer dust_head;
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-void set_initial_conditions(inner_limit_of_dust, outer_limit_of_dust)
-double inner_limit_of_dust, outer_limit_of_dust;
+void set_initial_conditions(double inner_limit_of_dust, double outer_limit_of_dust)
 {
     if ((dust_head = (dust *)malloc((unsigned)sizeof(dust))) == NULL) {
         perror("malloc'ing head of dust list");
@@ -71,9 +58,7 @@ double inner_limit_of_dust, outer_limit_of_dust;
 /*  Insert the given planet into a list of planets sorted by distance from  */
 /*  the primary.                                                            */
 /*--------------------------------------------------------------------------*/
-planet_pointer sorted_list_insert (head, planet)
-planet_pointer head;
-planet_pointer planet;
+planet_pointer sorted_list_insert (planet_pointer head, planet_pointer planet)
 {
     planet_pointer node;
     planet_pointer trailer = NULL;
@@ -118,9 +103,7 @@ planet_pointer planet;
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-double stell_dust_limit(mass_ratio, dist_from_primary, central_mass)
-double mass_ratio, dist_from_primary;
-int central_mass;
+double stell_dust_limit(double mass_ratio, double dist_from_primary, int central_mass)
 {
     double norm_limit, primary_effect;
 
@@ -137,16 +120,14 @@ int central_mass;
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-double nearest_body(mass_ratio)
-double mass_ratio;
+double nearest_body(double mass_ratio)
 {
     return(0.3 * power(mass_ratio,(1.0 / 3.0)));
 }
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-double farthest_body(stell_mass_ratio)
-double stell_mass_ratio;
+double farthest_body(double stell_mass_ratio)
 {
     return(50.0 * power(stell_mass_ratio,(1.0 / 3.0)));
 }
@@ -158,8 +139,7 @@ double stell_mass_ratio;
 /*   The input diameter is in units of Km, so we must first convert to AU   */
 /*   then multiply it by Roche's limit.  The output is in units of AU.      */
 /*--------------------------------------------------------------------------*/
-double roche_limit(diameter)
-double diameter;
+double roche_limit(double diameter)
 {
     double dia_in_AU;
 
@@ -169,24 +149,21 @@ double diameter;
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-double inner_effect_limit(a, e, mass)
-double a, e, mass;
+double inner_effect_limit(double a, double e, double mass)
 {
     return (a * (1.0 - e) * (1.0 - mass) / (1.0 + CLOUD_ECCENTRICITY));
 }
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-double outer_effect_limit(a, e, mass)
-double a, e, mass;
+double outer_effect_limit(double a, double e, double mass)
 {
     return (a * (1.0 + e) * (1.0 + mass) / (1.0 - CLOUD_ECCENTRICITY));
 }
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-int dust_available(inside_range, outside_range)
-double inside_range, outside_range;
+int dust_available(double inside_range, double outside_range)
 {
     dust_pointer current_dust_band;
 
@@ -216,8 +193,7 @@ double inside_range, outside_range;
 /*  immediately preceding it in the list.  If it was the first in the list, */
 /*  a NULL will be returned.                                                */
 /*--------------------------------------------------------------------------*/
-dust_pointer prior_dust_band (dust_head, band)
-dust_pointer dust_head, band;
+dust_pointer prior_dust_band (dust_pointer dust_head, dust_pointer band)
 {
     dust_pointer temp, trailer;
 
@@ -248,15 +224,13 @@ dust_pointer dust_head, band;
 /*                 begins to sweep up gas as well as dust and become a      */
 /*                 gas giant.                                               */
 /*    dust_head    Pointer to the head of the dust band list                */
-/*
+/*                                                                          */
 /*  LOCAL VARIABLES:                                                        */
 /*    r_inner      Innermost gravitational effect limit of the object       */
 /*    r_outer      Outermost gravitational effect limit of the object       */
 /*                                                                          */
 /*--------------------------------------------------------------------------*/
-double collect_dust(mass, a, e, crit_mass, dust_head)
-double mass, a, e, crit_mass;
-dust_pointer dust_head;
+double collect_dust(double mass, double a, double e, double crit_mass, dust_pointer dust_head)
 {
     double mass_density, temp1, temp2, bandwidth, width, volume,
             accumulated_mass;
@@ -533,8 +507,7 @@ dust_pointer dust_head;
 /*  in units of solar masses.                                               */
 /*--------------------------------------------------------------------------*/
 
-double critical_limit(orb_radius, eccentricity, stell_luminosity_ratio)
-double orb_radius, eccentricity, stell_luminosity_ratio;
+double critical_limit(double orb_radius, double eccentricity, double stell_luminosity_ratio)
 {
     double temp, perihelion_dist;
 
@@ -552,8 +525,7 @@ double orb_radius, eccentricity, stell_luminosity_ratio;
 /*  mass from sweeping up dust previously.  The process stops when the mass */
 /*  accumulation slows.                                                     */
 /*--------------------------------------------------------------------------*/
-double accrete_dust(mass, a, e, crit_mass)
-double mass, a, e, crit_mass;
+double accrete_dust(double mass, double a, double e, double crit_mass)
 {
     double new_mass;
 	dust_pointer band;
@@ -580,9 +552,7 @@ double mass, a, e, crit_mass;
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-planet_pointer find_collision (head, a, e)
-    planet_pointer  head;
-    double          a, e;
+planet_pointer find_collision (planet_pointer head, double a, double e)
 {
     planet_pointer node;
     planet_pointer closest_neighbor = NULL;
@@ -648,9 +618,7 @@ planet_pointer find_collision (head, a, e)
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
-void collide_planets(a, e, mass, node, stell_luminosity_ratio)
-    double          a, e, mass, stell_luminosity_ratio;
-    planet_pointer  node;
+void collide_planets(double a, double e, double mass, planet_pointer node, double stell_luminosity_ratio)
 {
     double          new_orbit, temp;
 
@@ -719,10 +687,8 @@ void collide_planets(a, e, mass, node, stell_luminosity_ratio)
 /*  If no collision with another planet occurrs, a new planet is created    */
 /*  its statistics filled in with those of the protoplanet.                 */
 /*--------------------------------------------------------------------------*/
-void coalesce_planetesimals(a, e, mass, crit_mass,
-                stell_luminosity_ratio, orbit_type)
-double a, e, mass, crit_mass, stell_luminosity_ratio;
-int orbit_type;
+void coalesce_planetesimals(double a, double e, double mass, double crit_mass,
+                double stell_luminosity_ratio, int orbit_type)
 {
     planet_pointer node, new_planet;
     int finished;
@@ -781,13 +747,10 @@ int orbit_type;
 /*  will end when all of the dust has been swept up by the planets.         */
 /*  'orbit_type' may be either PLANET (indicating that we're building a     */
 /*  series of planetary bodies about a star) or MOON (indicating we're      */
-/*  building moons around a planet).
+/*  building moons around a planet).                                        */
 /*--------------------------------------------------------------------------*/
-planet_pointer dist_masses(mass_ratio, stell_luminosity_ratio,
-               mass_type, planet_list, radius)
-double mass_ratio, stell_luminosity_ratio, radius;
-planet_pointer planet_list;
-int mass_type;
+planet_pointer dist_masses(double mass_ratio, double stell_luminosity_ratio,
+               int mass_type, planet_pointer planet_list, double radius)
 {
     double a, e, mass, crit_mass, eff_inner_bound, eff_outer_bound,
       planet_inner_bound, planet_outer_bound,
@@ -950,9 +913,7 @@ int mass_type;
 /*  ratio of the star's luminosity to that of the Sun's, and the radius of  */
 /*  the star is given in AU.                                                */
 /*--------------------------------------------------------------------------*/
-planet_pointer check_planets(head, luminosity, star_radius)
-planet_pointer head;
-double luminosity, star_radius;
+planet_pointer check_planets(planet_pointer head, double luminosity, double star_radius)
 {
     planet_pointer planet, absorbed_planet, vaporized_planet;
     double r_ecosphere, temperature;
@@ -1002,8 +963,7 @@ double luminosity, star_radius;
 /*  the star structs and returns a pointer to the head of the new planet    */
 /*  list.                                                                   */
 /*--------------------------------------------------------------------------*/
-planet_pointer init_planet_list (star_head)
-star_pointer star_head;
+planet_pointer init_planet_list (star_pointer star_head)
 {
     star_pointer star;
     planet_pointer planet;

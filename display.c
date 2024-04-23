@@ -9,40 +9,22 @@
 #include	<stdio.h>
 #include    <math.h>
 
-#ifdef BSD
-#include	<strings.h>
-#else
 #include	<string.h>
-#endif
-
-#ifdef MSDOS
-#include    <stddef.h>
-#include    <malloc.h>
-#include	<stdlib.h>
-#include    <float.h>
-#endif
 
 #include	"config.h"
 #include	"const.h"
 #include	"structs.h"
-
-#ifdef MSDOS
 #include	"protos.h"
-#endif
 
-extern double power();
-extern double random_number();
 extern int flag_graphic;
 extern int flag_moons;
 extern int flag_tec;
 
-void draw_system(sys)
-sys_pointer sys;
+void draw_system(sys_pointer sys)
 {
 }
 
-void describe_star (star)
-star_pointer star;
+void describe_star (star_pointer star)
 {
 	printf("Stellar Classification:      %7s\n", star->star_type);
 	printf("Stellar mass:                %7.2f solar masses\n",
@@ -56,8 +38,7 @@ star_pointer star;
 	printf("Earthlike insolation at:     %7.3f AU\n",star->r_ecosphere);
 }
 
-void describe_system(sys)
-sys_pointer sys;
+void describe_system(sys_pointer sys)
 {
 	planet_pointer node1;
 	planet_pointer node2;
@@ -194,8 +175,7 @@ sys_pointer sys;
 	}
 }
 
-void display_system(system)
-sys_pointer system;
+void display_system(sys_pointer system)
 {
 	if (flag_graphic)
 		draw_system(system);

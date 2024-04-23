@@ -14,20 +14,7 @@
 #include    <math.h>
 #include    <sys/types.h>
 #include    <sys/timeb.h>
-
-#ifdef MSDOS
 #include	<string.h>
-#include    <stddef.h>
-#include    <malloc.h>
-#include    <stdlib.h>
-#include    <float.h>
-#endif
-
-#ifdef BSD
-#include	<strings.h>
-#else
-#include	<string.h>
-#endif
 
 /*
  *    Starform includes:
@@ -35,10 +22,7 @@
 #include    "config.h"
 #include    "const.h"
 #include    "structs.h"
-
-#ifdef MSDOS
 #include    "protos.h"
-#endif
 
 /*
  *    Global variables used during planetary accretion:
@@ -57,53 +41,6 @@ int flag_moons =        FALSE;
 int flag_startype =     FALSE;
 int flag_tec =          FALSE;  /* for Dave Allen's "tec" program */
 
-/*
- *    Externals from C library not elsewhere declared:
- */
-extern void srand();
-
-/*
- *    Externals from other starform files (mainly enviro.c):
- */
-extern double random_number();
-extern double luminosity();
-extern double star_radius();
-extern char *classify();
-extern double star_mass();
-extern double star_age();
-extern planet_pointer dist_masses();
-extern planet_pointer check_planets();
-extern planet_pointer init_planet_list();
-extern int orb_zone();
-extern double empirical_density();
-extern double volume_density();
-extern double volume_radius();
-extern double kothari_radius();
-extern double period();
-extern double day_length();
-extern int inclination();
-extern double escape_vel();
-extern double accel();
-extern double rms_vel();
-extern double molecule_limit();
-extern double about();
-extern int grnhouse();
-extern double gravity();
-extern double vol_inventory();
-extern double pressure();
-extern double boiling_point();
-extern int  verify_startype();
-extern void startype_error();
-extern int rand_type();
-extern double rand_star_mass();
-extern void display_system();
-extern void iterate_surface_temp();
-
-void usage();
-void init();
-void generate_stellar_system();
-
-
 /*--------------------------------------------------------------------------*/
 /*   The main function decodes all of the command-line parameters, then     */
 /*   calls 'generate_stellar_system' and 'display_system'.  Currently, the  */
@@ -112,9 +49,7 @@ void generate_stellar_system();
 /*   would be better (after all, I don't have an X windows workstation at   */
 /*   home).                                                                 */
 /*--------------------------------------------------------------------------*/
-void main (argc, argv)
-int argc;
-char *argv[];
+int main (int argc, char *argv[])
 {
     char *c, *progname;
     int skip;
@@ -215,12 +150,11 @@ char *argv[];
 /*--------------------------------------------------------------------------*/
 /*   Tell the user what kind of command-line parameters are possible.       */
 /*--------------------------------------------------------------------------*/
-void usage (progname)
-char *progname;
+void usage (char *progname)
 {
 
     fprintf(stderr,
-        "%s: Usage: %s [-g] [-m] [-s#] [-v#] [-tl#l/#]\n", progname);
+        "%s: Usage: [-g] [-m] [-s#] [-v#] [-tl#l/#]\n", progname);
     fprintf(stderr,
         "\t -g        Display graphically (unimplemented)\n");
     fprintf(stderr,
@@ -289,17 +223,17 @@ void generate_stellar_system()
              */
             switch (star->lum_type) {
                 case GIANT:
-                    sprintf(star->star_type, "%c%d III\0", star->spec_class, star->spec_num);
+                    sprintf(star->star_type, "%c%d III", star->spec_class, star->spec_num);
                     break;
                 case SUPERGIANT:
-                    sprintf(star->star_type, "%c%d Ia\0", star->spec_class, star->spec_num);
+                    sprintf(star->star_type, "%c%d Ia", star->spec_class, star->spec_num);
                     break;
                 case WHITE_DWARF:
-                    sprintf(star->star_type, "D%c%d\0", star->spec_class, star->spec_num);
+                    sprintf(star->star_type, "D%c%d", star->spec_class, star->spec_num);
                     break;
                 case MAIN_SEQUENCE:
                 default:
-                    sprintf(star->star_type, "%c%d V\0", star->spec_class, star->spec_num);
+                    sprintf(star->star_type, "%c%d V", star->spec_class, star->spec_num);
                     break;
             }
         }

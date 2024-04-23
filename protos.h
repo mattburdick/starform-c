@@ -5,7 +5,6 @@
 /*----------------------------------------------------------------------*/
 /* (c) Copyright Matt Burdick 1991 - All Rights Reserved                */
 /*----------------------------------------------------------------------*/
-#include "structs.h"
 /*
  *	From 'accrete.c':
  */
@@ -72,7 +71,7 @@ void           iterate_surface_temp(planet_pointer *, double);
 void           usage(char *);
 void           init(void);
 void           generate_stellar_system(void);
-void           main(int, char **);
+int            main(int, char **);
 
 /*
  *	From 'stars.c':

@@ -15,22 +15,10 @@
 #include    <stdlib.h>
 #include    <string.h>
 
-#ifdef MSDOS
-#include	<process.h>
-#include	<stdlib.h>
-#endif
-
 #include	"config.h"
 #include	"const.h"
 #include	"structs.h"
-
-#ifdef MSDOS
 #include	"protos.h"
-#endif
-
-extern double about();
-extern double power();
-extern double random_number();
 
 /*--------------------------------------------------------------------------*/
 /*  The 'ms_stardata' array holds information on main-sequence stars (V).   */
@@ -138,9 +126,7 @@ spectral_info sg_stardata[] = {
 /*   overestimates the luminosity slightly.  It does, however, fit the      */
 /*   mass-luminosity curve fairly well.                                     */
 /*--------------------------------------------------------------------------*/
-double luminosity(mass_ratio, lum_class)
-double mass_ratio;
-int lum_class;
+double luminosity(double mass_ratio, int lum_class)
 {
 	double temp, alpha, beta;
 
@@ -185,9 +171,7 @@ int lum_class;
 /*   The mass_ratio is unitless and is a ratio of the stellar mass to that  */
 /*   of the Sun.  The stellar radius returned is in units of AU.            */
 /*--------------------------------------------------------------------------*/
-double star_radius (mass_ratio, lum_class, cooler_than_G0)
-double mass_ratio;
-int lum_class, cooler_than_G0;
+double star_radius (double mass_ratio, int lum_class, int cooler_than_G0)
 {
 	double temp;
 
@@ -231,8 +215,7 @@ int lum_class, cooler_than_G0;
 /*   Both the main sequence lifetime and the age returned are in units of   */
 /*   years.  The lifetime passed in is guaranteed to be >= 1 million.       */
 /*--------------------------------------------------------------------------*/
-double star_age (lifetime)
-double lifetime;
+double star_age (double lifetime)
 {
 	double temp;
 
@@ -251,9 +234,7 @@ double lifetime;
 /*   for the correct spectral class catagory, then calculates the spectral  */
 /*   number.                                                                */
 /*--------------------------------------------------------------------------*/
-char *classify (mass_ratio, lum_class)
-double mass_ratio;
-int lum_class;
+char *classify (double mass_ratio, int lum_class)
 {
 	spectral_info *stardata;
 	int i, modifier, temp;
@@ -280,7 +261,7 @@ int lum_class;
 		prev_mass = stardata[i].max_mass, i++)
 	;
 	if ((i == 14) && (stardata[i].max_mass < mass_ratio)) {
-		sprintf(buf, "%c%c %c\0", '?', '?', '?');
+		sprintf(buf, "%c%c %c", '?', '?', '?');
 	}
 	else {
 		temp = (int) (5.0 * (stardata[i].max_mass - mass_ratio) /
@@ -288,17 +269,17 @@ int lum_class;
 		modifier = stardata[i].spec_num + temp;
 		switch (lum_class) {
 			case GIANT:
-				sprintf(buf, "%c%d III\0", stardata[i].spec_class, modifier);
+				sprintf(buf, "%c%d III", stardata[i].spec_class, modifier);
 				break;
 			case SUPERGIANT:
-				sprintf(buf, "%c%d Ia\0", stardata[i].spec_class, modifier);
+				sprintf(buf, "%c%d Ia", stardata[i].spec_class, modifier);
 				break;
 			case WHITE_DWARF:
-				sprintf(buf, "%c%d D\0", stardata[i].spec_class, modifier);
+				sprintf(buf, "%c%d D", stardata[i].spec_class, modifier);
 				break;
 			case MAIN_SEQUENCE:
 			default:
-				sprintf(buf, "%c%d V\0", stardata[i].spec_class, modifier);
+				sprintf(buf, "%c%d V", stardata[i].spec_class, modifier);
 				break;
 		}
 	}
@@ -312,9 +293,7 @@ int lum_class;
 /*   and spectral number of a star, this function will return the mass      */
 /*   interpolated from the stardata structure arrays.                       */
 /*--------------------------------------------------------------------------*/
-double star_mass(lum_class, spec_class, spec_num)
-char spec_class;
-int spec_num, lum_class;
+double star_mass(int lum_class, char spec_class, int spec_num)
 {
 	spectral_info *stardata;
 	int i;
@@ -356,9 +335,7 @@ int spec_num, lum_class;
 /*   '-t' command-line flag.  An error indicator will be returned if the    */
 /*   command-line info is incorrect.                                        */
 /*--------------------------------------------------------------------------*/
-int verify_startype (lum_id, spec_num, spec_class)
-char lum_id, spec_class;
-int spec_num;
+int verify_startype (char lum_id, int spec_num, char spec_class)
 {
 	int error_type = 0;
 
@@ -382,9 +359,7 @@ int spec_num;
 /*   The startype_error function interprets and displays an error           */
 /*   indicator returned by the verify_startype function.                    */
 /*--------------------------------------------------------------------------*/
-void startype_error(errornum, spec_class, spec_num, lum_id)
-int errornum, spec_num;
-char spec_class, lum_id;
+void startype_error(int errornum, char spec_class, int spec_num, char lum_id)
 {
 	if (errornum & BAD_SPECTRA)
 		printf("ERROR: invalid spectral class <%c>\n", spec_class);
@@ -399,8 +374,7 @@ char spec_class, lum_id;
 /*   mass of a random star.                                                 */
 /*   Mass is returned as a ratio of the star's mass to the Sun's.           */
 /*--------------------------------------------------------------------------*/
-double rand_star_mass (startype)
-int startype;
+double rand_star_mass (int startype)
 {
 	spectral_info *stardata;
 	int temp, percent = 0, i;
@@ -441,7 +415,7 @@ int startype;
 /*   you are interested in larger stars, you can always generate them       */
 /*   using the '-t' flag!                                                   */
 /*--------------------------------------------------------------------------*/
-int rand_type () {
+int rand_type (void) {
 	int temp;
 
 	temp = (int)random_number(0.0, 100.0);
